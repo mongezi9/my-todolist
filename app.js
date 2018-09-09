@@ -4,6 +4,7 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const app = express();
 
+
 let todolist = [];
 
 /* The to do list and the form are displayed */
@@ -27,9 +28,18 @@ app.get('/todo', function(req, res) {
     res.redirect('/todo');
 })
 
+/* edits an item from the to do list */
+.post('/todo/edit/:id', urlencodedParser, function(req, res) {
+    if (req.body.edit != '') {
+        todolist[req.params.id ]= req.body.edit;
+    }
+    res.redirect('/todo');
+})
+
 /* Redirects to the to do list if the page requested is not found */
 .use(function(req, res, next){
     res.redirect('/todo');
 })
 
-.listen(8080);
+.listen(8081);
+console.log("Running server...");
