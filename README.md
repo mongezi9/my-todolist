@@ -33,4 +33,10 @@ Visit http://localhost:8080 in your browser
 > - Will be nice if you can git tag the tasks by number
 
 ### Solution
-Explain what you have done here and why...
+task-1 : added edit functionality such that user can modify his/her to do list 
+        > WHY: Introduced another endpoint to the app called "/todo/edit/:id"
+               Whatever option in the list that is updated it will be POSTED, from express POST I have manipulated **req.body.edit -> new_value** and its **req.params.id -> index** to update
+               **todoList[index] = new_value**
+        > **View** - I have embedded a list with a form that is submitable once a user clicks it shall save users modified record. 
+
+
