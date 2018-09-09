@@ -98,3 +98,29 @@ Visit http://localhost:8080 in your browser
 
 
 > - This can be integrated with AWS EC2, for purpose of shipping around to any env.
+> ### task-3 : (Creating Automated Tests, for adding, editing and deleting items in todolist)
+> - Install **mocha** and **chai** i.e *npm install --save-dev mocha chai*
+> - **testcase1**: adding new item in the list
+
+    chai assets is used to check that intensions of a program are achieved e.g *assert.equal("item1", "item2");* where item1 - is the entered value to be in a list, and item2 - is expected item to be in a list 
+
+> - **testcase2**: edits existing item in the list
+
+    chai assets is used to check that intensions of a program are achieved e.g *assert.equal("item1", "item2");* where item1 - is the edited value in a list, and item2 - is expected item to be differentiated  
+
+> - **testcase3**: deletes item in the list
+
+    chai assets is used to check that intensions of a program are achieved e.g *assert.false("item1");* where item1 - we expect the value/element to be false as we assume that its deleted.  
+
+> - this test are automated with aid of selenium webdriver, so will need to add **npm install selenium-webdriver** and in this case we only         run our test against chromedriver, **npm install chromedriver**
+> - http://localhost:8081/todo must be running first in order to kick off the test 
+> - this test cases can all be ran using **npm test**, since script has been added in package.json 
+    
+    "directories": {
+         "test": "test"
+    },
+    "scripts": {
+        "test": "mocha"
+    },
+
+> - This line its will run all tests in mocha, and at the same it compiles covered tests either passing/failing.
