@@ -41,5 +41,5 @@ app.get('/todo', function(req, res) {
     res.redirect('/todo');
 })
 
-.listen(8081);
+.listen(8081); //I have changed this port, somehow my 8080 port is in use, got to use 8081
 console.log("Running server...");

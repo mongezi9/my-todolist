@@ -7,5 +7,9 @@
     "express": "^4.14.0"
   },
   "author": "riaan@entersekt.com",
-  "description": "Basic to do list exercise"
+  "description": "Basic to do list exercise",
+  "main": "app.js",
+  "scripts":{
+    "start": "node app.js"
+  }
 }
