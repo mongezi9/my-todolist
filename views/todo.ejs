@@ -5,6 +5,9 @@
         <title>My todolist</title>
         <style>
             a {text-decoration: none; color: black;}
+            *:focus {
+                outline: none;
+            }
         </style>
     </head>
 
@@ -12,7 +15,11 @@
         <h1>My todolist</h1>
         <ul>
         <% todolist.forEach(function(todo, index) { %>
-            <li><a href="/todo/delete/<%= index %>">✘</a> <%- todo %></li>
+            
+                <form  action = "/todo/edit/<%= index %>" method="post">
+                    <li><a href="/todo/delete/<%= index %>" id ="btn_delete_<%=index%>">✘</a><input style="border:none" type="text" name="edit" id="txt_edit_<%=index%>" value="<%=todo%>" autofocus /> <input type="submit" id = "btn_save_<%=index%>" value ="save"/></li>
+                   
+                </form>
         <% }); %>
         </ul>
 
@@ -20,7 +27,7 @@
             <p>
                 <label for="newtodo">What shoud I do?</label>
                 <input type="text" name="newtodo" id="newtodo" autofocus />
-                <input type="submit" />
+                <input type="submit" id ="add" />
             </p>
         </form>
     </body>
