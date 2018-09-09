@@ -40,4 +40,60 @@ Visit http://localhost:8080 in your browser
                **todoList[index] = new_value**
 > - **View** - I have embedded a list with a form that is submitable once a user clicks it shall save users modified record. 
 
+> ### task-2 : (Aim to Containerized Nodejs app) i.e **BUILD->SHIP->RUN**
+> - touch DockerFile
+> - And added the following to the dockerfile to define image
+> - **FROM node:8** *pulls latest version from dockerHub LTS (long term support)*
+> - **WORKDIR /app** *creates an app directory*
+> - **COPY package*.json ./**
+> - **RUN npm install**
+> - **COPY . .**
+> - **EXPOSE 8081**
+> - ****
+> - added .dockerignore file - we don't want to copy all node-module files in the process of creating out docker image, so we exlude **node-module, npm-debug.log**
+> ####Build Img
+> - **docker build -t my_to_do_list .**
+> - $ docker build -t my_to_do_list .
+            Sending build context to Docker daemon  2.873MB
+            Step 1/7 : FROM node:8
+            ---> 8198006b2b57
+            Step 2/7 : WORKDIR /app
+            ---> Using cache
+            ---> 0169ac5b24fd
+            Step 3/7 : COPY package*.json ./
+            ---> b90c922e20e1
+            Step 4/7 : RUN npm install
+            ---> Running in d27257c6252f
+            npm WARN my-todolist@0.1.0 No repository field.
+            npm WARN my-todolist@0.1.0 No license field.
 
+            added 59 packages in 5.136s
+            Removing intermediate container d27257c6252f
+            ---> 2b565864c9a4
+            Step 5/7 : COPY . .
+            ---> 93617b9137e9
+            Step 6/7 : EXPOSE 8081
+            ---> Running in 9c1990f296a5
+            Removing intermediate container 9c1990f296a5
+            ---> 9b730cd4ce6c
+            Step 7/7 : CMD ["npm","start"]
+            ---> Running in 74e3bb007c63
+            Removing intermediate container 74e3bb007c63
+            ---> 80f471aa6ed4
+            Successfully built 80f471aa6ed4
+            Successfully tagged my_to_do_list:latest
+            SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
+
+> ####RUN Img
+> - **docker run -p 8081:8081 -d my_to_do_list**
+> - It will generate container image *d2a09426acdfb4359f7b2047b40592cfd9b827a10e2c5569855cc2da3df5c437*
+> - Now container its up and running on port 8081, http://localhost:8081
+> - when exe this i see logs **docker logs d2a09426acdfb4359f7b2047b40592cfd9b827a10e2c5569855cc2da3df5c437**
+
+> - *my-todolist@0.1.0 start /app*
+> - *node app.js*
+
+> - *Running server...*
+
+
+> - This can be integrated with AWS EC2, for purpose shipping around to any env.
