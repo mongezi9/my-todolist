@@ -49,6 +49,7 @@ Visit http://localhost:8080 in your browser
 > - **RUN npm install**
 > - **COPY . .**
 > - **EXPOSE 8081**
+> - **CMD ["npm","start"]** *runs my application inside a container*
 > - ****
 > - added .dockerignore file - we don't want to copy all node-module files in the process of creating out docker image, so we exlude **node-module, npm-debug.log**
 > ### Build
@@ -96,4 +97,4 @@ Visit http://localhost:8080 in your browser
           Running server...
 
 
-> - This can be integrated with AWS EC2, for purpose shipping around to any env.
+> - This can be integrated with AWS EC2, for purpose of shipping around to any env.
