@@ -51,9 +51,9 @@ Visit http://localhost:8080 in your browser
 > - **EXPOSE 8081**
 > - ****
 > - added .dockerignore file - we don't want to copy all node-module files in the process of creating out docker image, so we exlude **node-module, npm-debug.log**
-> ####Build Img
+> ### Build
 > - **docker build -t my_to_do_list .**
-> - $ docker build -t my_to_do_list .
+
             Sending build context to Docker daemon  2.873MB
             Step 1/7 : FROM node:8
             ---> 8198006b2b57
@@ -84,16 +84,16 @@ Visit http://localhost:8080 in your browser
             Successfully tagged my_to_do_list:latest
             SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
 
-> ####RUN Img
+> ### RUN
 > - **docker run -p 8081:8081 -d my_to_do_list**
 > - It will generate container image *d2a09426acdfb4359f7b2047b40592cfd9b827a10e2c5569855cc2da3df5c437*
 > - Now container its up and running on port 8081, http://localhost:8081
-> - when exe this i see logs **docker logs d2a09426acdfb4359f7b2047b40592cfd9b827a10e2c5569855cc2da3df5c437**
-
-> - *my-todolist@0.1.0 start /app*
-> - *node app.js*
-
-> - *Running server...*
+> - when exe this **docker logs d2a09426acdfb4359f7b2047b40592cfd9b827a10e2c5569855cc2da3df5c437**
+> - i see logs as follows
+         
+          my-todolist@0.1.0 start /app
+          node app.js
+          Running server...
 
 
 > - This can be integrated with AWS EC2, for purpose shipping around to any env.
