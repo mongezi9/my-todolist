@@ -24,10 +24,17 @@ pipeline {
       stage("Load application") {
         steps {
 
-              sh """
-                    docker build -t my_to_do_list .
-                    docker run -p 8081:8081 -d my_to_do_list       
-                """
+             script {
+                try {
+                      sh """
+                            docker build -t my_to_do_list .
+                            docker run -p 8081:8081 -d my_to_do_list       
+                        """
+                } catch (err) { 
+                    echo "The emulator is not open"                                          
+                }
+            }      
+
         }
     }
     // Parameters needed: JOB_FILES_DIRECTORY, PLATFORM_TOOL_DIRECTORY, EMULATOR_DIRECTORY, SUITE_PATH
@@ -35,7 +42,7 @@ pipeline {
     // ------------------------------------
     // -- STAGE: Initial Configuration
     // ------------------------------------
-    stage("Initial Configuration") {
+  /*  stage("Initial Configuration") {
         steps {
 
             script {
@@ -57,13 +64,13 @@ pipeline {
             echo "Clean Workspace"
             cleanWs()
         }
-    }
+    }*/
     
     // Parameters needed: JOB_GIT_BRANCH, JOB_GIT_URL, GIT_CREDENTIAL
     // --------------------------------
     // -- STAGE: Download GIT Code
     // --------------------------------
-    stage("Download GIT Code") {
+  /*  stage("Download GIT Code") {
         steps {
             script {
                 try {
@@ -162,18 +169,18 @@ pipeline {
                             """
                         }
                         echo "Publishing Junit Results"
-                        junit "**/target/surefire-reports/junitreports/*.xml"
+                        junit "/target//surefire-reports/junitreports/*.xml"
 
                     } catch (err) { 
                         echo "Archiving Screenshot of the Failed Tests"
-                        archiveArtifacts "**/screenshot/*.png"
+                        archiveArtifacts "/screenshot/.png"
                         echo "Publishing Junit Results"
-                        junit "**/target/surefire-reports/junitreports/*.xml"
+                       
                     }
                 }   
             }
         }
-    }
+    }*/
 
     //------------------------------------
     // -- STAGE: SonarQube
