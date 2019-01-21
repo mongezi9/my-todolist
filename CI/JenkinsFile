@@ -3,3 +3,4 @@ stage('Initialize'){
     def mavenHome  = tool 'myMaven'
     env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
 }
+///COMMENTED FILE
