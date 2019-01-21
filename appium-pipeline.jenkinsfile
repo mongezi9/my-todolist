@@ -1,14 +1,58 @@
 
-node('docker') {
-    stage('Initialize'){
-        def dockerHome = tool 'myDocker'
-        def mavenHome  = tool 'myMaven'
-        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+
+pipeline {
+    agent { label 'dockerserver' } // if you don't have other steps, 'any' agent works
+    stages {
+        stage('Init') {
+            def dockerHome = tool 'myDocker'
+            def mavenHome  = tool 'myMaven'
+            env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+
+            agent {
+              docker {
+                label 'dockerserver'  // both label and image
+                image 'node:7-alpine' 
+              }
+            }
+            steps {
+                sh 'node --version'
+            }
+        }
+        stage('Back-end') {
+            agent {
+                docker {
+                  label 'dockerserver'  // both label and image
+                  image 'maven:3-alpine'
+                }
+            }
+            steps {
+                sh 'mvn --version'
+            }
+        }
+        stage('Front-end') {
+            agent {
+              docker {
+                label 'dockerserver'  // both label and image
+                image 'node:7-alpine' 
+              }
+            }
+            steps {
+                sh 'node --version'
+            }
+        }
+         stage('Build App') {
+            
+            agent {
+              docker {
+                label 'dockerserver'  // both label and image
+                image 'node:7-alpine' 
+              }
+            }
+            steps {
+                  sh "docker build -t my_to_do_list ."
+                  sh "docker run -p 8081:8081 -d my_to_do_list"
+            }
+        }
+        
     }
-    stage 'Checkout'
-        checkout scm
-    stage 'Build & UnitTest'
-         sh "docker build -t my_to_do_list ."
-         sh "docker run -p 8081:8081 -d my_to_do_list"
-   
 }
