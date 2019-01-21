@@ -21,12 +21,14 @@ pipeline {
     options{timestamps()}
 
     stages {
+      stage('Initialize'){
+            def dockerHome = tool 'myDocker'
+            def mavenHome  = tool 'myMaven'
+            env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+      }
 
       stage("Load application") {
-        def dockerHome = tool 'myDocker'
-        def mavenHome  = tool 'myMaven'
-        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
-
+        
         steps {
 
              script {
