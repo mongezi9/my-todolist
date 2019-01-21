@@ -14,6 +14,9 @@ node {
     stage('Checkout') {
         checkout scm
     }
+     stage("Image App To Do"){
+        buildApp()
+    }
 
     stage('Build'){
         sh "mvn clean install"
@@ -27,9 +30,7 @@ node {
         }
      }
 
-    stage("Image App To Do"){
-        buildApp()
-    }
+   
 }
 def buildApp(){
     try {
