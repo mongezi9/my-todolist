@@ -3,21 +3,7 @@
 pipeline {
     agent { label 'dockerserver' } // if you don't have other steps, 'any' agent works
     stages {
-        stage('Init') {
-            def dockerHome = tool 'myDocker'
-            def mavenHome  = tool 'myMaven'
-            env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
-
-            agent {
-              docker {
-                label 'dockerserver'  // both label and image
-                image 'node:7-alpine' 
-              }
-            }
-            steps {
-                sh 'node --version'
-            }
-        }
+        
         stage('Back-end') {
             agent {
                 docker {
