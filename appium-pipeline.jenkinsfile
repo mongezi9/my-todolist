@@ -19,9 +19,14 @@ pipeline {
     agent any
     // -- Display a timestamp on the log.
     options{timestamps()}
+
     stages {
 
       stage("Load application") {
+        def dockerHome = tool 'myDocker'
+        def mavenHome  = tool 'myMaven'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+
         steps {
 
              script {
