@@ -20,6 +20,17 @@ pipeline {
     // -- Display a timestamp on the log.
     options{timestamps()}
     stages {
+        
+        ////test this for ENV
+        stage('Setup environment vars') {
+            environment { 
+                    AOEU= sh (returnStdout: true, script: 'echo aoeu').trim()
+                }
+            steps {
+                sh 'env'
+                sh 'echo $AOEU'
+            }
+        }
 
     // Parameters needed: JOB_FILES_DIRECTORY, PLATFORM_TOOL_DIRECTORY, EMULATOR_DIRECTORY, SUITE_PATH
     // JOB_NAME, JOB_APPIUM_SUITE
