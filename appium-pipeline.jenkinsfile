@@ -21,6 +21,15 @@ pipeline {
     options{timestamps()}
     stages {
 
+      stage("Load application") {
+        steps {
+
+              sh """
+                    docker build -t my_to_do_list .
+                    docker run -p 8081:8081 -d my_to_do_list       
+                """
+        }
+    }
     // Parameters needed: JOB_FILES_DIRECTORY, PLATFORM_TOOL_DIRECTORY, EMULATOR_DIRECTORY, SUITE_PATH
     // JOB_NAME, JOB_APPIUM_SUITE
     // ------------------------------------
@@ -192,22 +201,22 @@ pipeline {
     post ("Post-Build Actions"){
         success ("JOB SUCCESS"){
             sh "echo Success Job"
-            slackSend botUser: true, color: "#14910c", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` finished successfully (<${BUILD_URL}|Open>)."
+         //   slackSend botUser: true, color: "#14910c", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` finished successfully (<${BUILD_URL}|Open>)."
         }
 
         failure ("JOB FAILURE"){
             sh "echo Failure Job"
-            slackSend botUser: true, color: "#d6280d", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` finished with a failure (<${BUILD_URL}|Open>)"   
+         //  slackSend botUser: true, color: "#d6280d", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` finished with a failure (<${BUILD_URL}|Open>)"   
         }
 
         unstable ("JOB UNSTABLE") {
             sh "echo Unstable Job"
-            slackSend botUser: true, color: "#fded72", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` finished unstable (<${BUILD_URL}|Open>)" 
+         //   slackSend botUser: true, color: "#fded72", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` finished unstable (<${BUILD_URL}|Open>)" 
         }
 
         aborted ("JOB ABORTED") {
             sh "echo Aborted Job"
-            slackSend botUser: true, color: "#a6a6a6", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` was aborted (<${BUILD_URL}|Open>)"
+         //   slackSend botUser: true, color: "#a6a6a6", channel: "#"+"${JOB_SLACK_CHANNEL_NOTIFICATION}", message: "The Pipeline: `${JOB_NAME}`, `${BUILD_NUMBER}` was aborted (<${BUILD_URL}|Open>)"
         }
     }
 }
