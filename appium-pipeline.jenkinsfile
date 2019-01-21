@@ -10,9 +10,7 @@ def EMULATOR_DIRECTORY
 // -- Path of the Suite to execute
 def SUITE_PATH
 
-def dockerHome = tool 'myDocker'
-def mavenHome  = tool 'myMaven'
-env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+
 
 // -- Keep only 15 builds
 echo 'Discard old build'
@@ -27,7 +25,10 @@ pipeline {
     stages {
          
       stage("Load application") {
-       
+        def dockerHome = tool 'myDocker'
+        def mavenHome  = tool 'myMaven'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        
         steps {
 
              script {
