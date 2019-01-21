@@ -1,7 +1,7 @@
 
 
 pipeline {
-    agent { label 'dockerserver' } // if you don't have other steps, 'any' agent works
+    agent { label 'any' } // if you don't have other steps, 'any' agent works
     stages {
         
         stage('Back-end') {
@@ -18,7 +18,7 @@ pipeline {
         stage('Front-end') {
             agent {
               docker {
-                label 'dockerserver'  // both label and image
+                label 'any'  // both label and image
                 image 'node:7-alpine' 
               }
             }
@@ -30,7 +30,7 @@ pipeline {
             
             agent {
               docker {
-                label 'dockerserver'  // both label and image
+                label 'any'  // both label and image
                 image 'node:7-alpine' 
               }
             }
