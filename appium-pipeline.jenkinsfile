@@ -10,6 +10,10 @@ def EMULATOR_DIRECTORY
 // -- Path of the Suite to execute
 def SUITE_PATH
 
+def dockerHome = tool 'myDocker'
+def mavenHome  = tool 'myMaven'
+env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+
 // -- Keep only 15 builds
 echo 'Discard old build'
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', 
@@ -21,25 +25,15 @@ pipeline {
     options{timestamps()}
 
     stages {
-         stage('Initialize'){
-            def dockerHome = tool 'myDocker'
-            def mavenHome  = tool 'myMaven'
-            env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
-        }
-
+         
       stage("Load application") {
-        def dockerHome = tool 'myDocker'
-        def mavenHome  = tool 'myMaven'
-        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
-
+       
         steps {
 
              script {
                 try {
-                      sh """
-                            docker build -t my_to_do_list .
-                            docker run -p 8081:8081 -d my_to_do_list       
-                        """
+                      sh "docker build -t my_to_do_list ."
+                      sh "docker run -p 8081:8081 -d my_to_do_list"
                 } catch (err) { 
                     echo "The emulator is not open"                                          
                 }
@@ -47,154 +41,7 @@ pipeline {
 
         }
     }
-    // Parameters needed: JOB_FILES_DIRECTORY, PLATFORM_TOOL_DIRECTORY, EMULATOR_DIRECTORY, SUITE_PATH
-    // JOB_NAME, JOB_APPIUM_SUITE
-    // ------------------------------------
-    // -- STAGE: Initial Configuration
-    // ------------------------------------
-  /*  stage("Initial Configuration") {
-        steps {
 
-            script {
-                // -- Set the Directory of the files in the workspace
-                JOB_FILES_DIRECTORY = "${env.JOB_DIRECTORY}"+"/src/test/resources/files"
-                // -- Set the suite name and route parameter
-                SUITE_PATH = "src/test/resources/suites/"+"${JOB_APPIUM_SUITE}"+".xml" 
-
-                // -- Initial Configuration Only If the Platform is Android.
-                if (JOB_PLATFORM_NAME == "android"){
-                    // -- Set the Platform Tool Directory. 
-                    PLATFORM_TOOL_DIRECTORY = "${env.ANDROID_HOME}"+"/platform-tools/"
-                    // -- Set the Emulator Directory.
-                    EMULATOR_DIRECTORY = "${env.ANDROID_HOME}"+"/emulator/"
-                }
-            }
-
-            // -- Clean Workspace
-            echo "Clean Workspace"
-            cleanWs()
-        }
-    }*/
-    
-    // Parameters needed: JOB_GIT_BRANCH, JOB_GIT_URL, GIT_CREDENTIAL
-    // --------------------------------
-    // -- STAGE: Download GIT Code
-    // --------------------------------
-  /*  stage("Download GIT Code") {
-        steps {
-            script {
-                try {
-                   // -- Download GIT Code 
-                    echo "Downloading GIT Code from: ${JOB_GIT_URL}. Branch: ${JOB_GIT_BRANCH}"
-                    checkout([$class: "GitSCM", branches: [[name: "${JOB_GIT_BRANCH}"]], doGenerateSubmoduleConfigurations: false, 
-                    extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: "${env.GIT_CREDENTIAL}", 
-                    url: "${JOB_GIT_URL}"]]])
-                } catch (err) { 
-                    echo "The Download GIT Code Stage failed"                                          
-                }
-            }   
-        }
-    }
-
-    // Parameters needed: JOB_PLATFORM_NAME, PLATFORM_TOOL_DIRECTORY
-    // --------------------------------
-    // -- STAGE: Execute ADB Server
-    // --------------------------------
-    stage("Execute ADB Server") {
-        when {
-                expression { return JOB_PLATFORM_NAME == "android" }
-        }
-        steps {
-            echo "Executing ADB Server"
-            // -- First, you need to go to the Platform Tool Directory.
-            // -- Then run the ADB Server
-            script {
-                try {
-                    sh """
-                        cd ${PLATFORM_TOOL_DIRECTORY}
-                        ./adb start-server&
-                    """
-                } catch (err) { 
-                    echo "The ADB Server is not running"                                          
-                }
-            }  
-        }
-    }
-
-    // Parameters needed: JOB_PLATFORM_NAME, EMULATOR_DIRECTORY, JOB_EMULATOR_VERSION
-    // --------------------------------
-    // -- STAGE: Launch Android Emulador
-    // --------------------------------
-    stage("Launch Android Emulador") {
-        when {
-                expression { return JOB_PLATFORM_NAME == "android" }
-        }
-        steps {
-            echo "Starting Emulador"
-                // -- First, you need to go to the Emulator Directory.
-                // -- Then launch the Emulator
-            script {
-                try {
-                    sh """
-                        cd ${EMULATOR_DIRECTORY}
-                        ./emulator -avd ${JOB_DEVICE_NAME} -engine auto -wipe-data -no-cache -memory 3072 -no-snapshot-save&
-                        sleep 60s
-                    """
-                } catch (err) { 
-                    echo "The emulator is not open"                                          
-                }
-            }      
-        }
-    }
-
-    // Parameters needed: JOB_PLATFORM_NAME, JOB_APP_NAME, JOB_DEVICE_NAME, 
-    // JOB_PLATFORM_NAME, JOB_EMULATOR_PLATFORM_VERSION
-    // --------------------------------
-    // -- STAGE: Appium Test
-    // --------------------------------
-    stage("Appium Test") {
-        steps {
-            script {
-                // -- Android Appium Test
-                if (JOB_PLATFORM_NAME == "android"){
-                    echo "Launching Appium Test on Android"
-                }
-                // -- iOS Appium Test
-                if (JOB_PLATFORM_NAME == "ios"){
-                    echo "Launching Appium Test on iOS"
-                    //TODO: Complete
-                }
-                
-                // -- Script to launch Appium Test
-                script {
-                    try {
-                        if (JOB_APP_NAME) {
-                            sh """
-                                mvn clean -DdeviceName="${JOB_DEVICE_NAME}" -DdevicePlatformName="${JOB_PLATFORM_NAME}" -DdevicePlatformVersion="${JOB_EMULATOR_PLATFORM_VERSION}" -DdeviceApp="${JOB_APP_NAME}" -DtestSuite="${SUITE_PATH}" test
-                            """
-                        }
-                        else {
-                            sh """
-                                mvn clean -DdeviceName="${JOB_DEVICE_NAME}" -DdevicePlatformName="${JOB_PLATFORM_NAME}" -DdevicePlatformVersion="${JOB_EMULATOR_PLATFORM_VERSION}" -DtestSuite="${SUITE_PATH}" test
-                            """
-                        }
-                        echo "Publishing Junit Results"
-                        junit "/target//surefire-reports/junitreports/*.xml"
-
-                    } catch (err) { 
-                        echo "Archiving Screenshot of the Failed Tests"
-                        archiveArtifacts "/screenshot/.png"
-                        echo "Publishing Junit Results"
-                       
-                    }
-                }   
-            }
-        }
-    }*/
-
-    //------------------------------------
-    // -- STAGE: SonarQube
-    // ------------------------------------
     stage("SonarQube") {
         steps {
             script {
