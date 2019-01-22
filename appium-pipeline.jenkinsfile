@@ -1,40 +1,20 @@
-
-
-pipeline {
-    agent { label 'myDocker' } // if you don't have other steps, 'any' agent works
-    stages {
-        
-        stage('Back-end') {
-   
-            steps {
-            
-                sh "fastlane"
-            }
-        }
-        stage('Front-end') {
-            agent {
-              docker {
-                label 'myDocker'  // both label and image
-                image 'node:7-alpine' 
-              }
-            }
-            steps {
-                sh 'node --version'
-            }
-        }
-         stage('Build App') {
-            
-            agent {
-              docker {
-                label 'myDocker'  // both label and image
-                image 'node:7-alpine' 
-              }
-            }
-            steps {
-                  sh "docker build -t my_to_do_list ."
-                  sh "docker run -p 8081:8081 -d my_to_do_list"
-            }
-        }
-        
+node {
+    stage('Checkout') {
+        checkout([$class: 'GitSCM', branches: [[name: '*/$branch']], 
+            doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
+            userRemoteConfigs: [[credentialsId:'/$githubToken' , url: 'gihub project url']]])
+    }
+    stage('Environment/Bundles Setup') {
+        sh "Scripts/change_server.sh $server"
+        sh "pod install --repo-update"
+    }
+    stage('Clean') {
+        sh 'fastlane clean_xcode'
+    }
+    stage('Code Sign') {
+        sh 'fastlane codesign method:"adhoc"'
+    }
+    stage('Create Build') {   
+        sh 'fastlane create_build'
     }
 }
