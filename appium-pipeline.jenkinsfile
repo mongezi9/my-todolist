@@ -5,12 +5,7 @@ pipeline {
     stages {
         
         stage('Back-end') {
-            agent {
-                docker {
-                  label 'myDocker'  // both label and image
-                  image 'maven:3-alpine'
-                }
-            }
+   
             steps {
             
                 sh "fastlane"
