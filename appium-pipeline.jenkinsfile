@@ -12,7 +12,8 @@ pipeline {
                 }
             }
             steps {
-                sh 'mvn --version'
+            
+                sh "fastlane"
             }
         }
         stage('Front-end') {
