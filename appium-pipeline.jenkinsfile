@@ -1,7 +1,7 @@
 node {
    
     stage('Environment/Bundles Setup') {
-        sh "ls"
+        sh "docker run -v $(pwd):/workspace -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):$(which docker) marcellodesales/jenkinsfile-runner"
         sh "docker build -t my_to_do_list ."
      
     }
