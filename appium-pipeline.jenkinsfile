@@ -1,6 +1,7 @@
 node {
     stage('Checkout') {
-        checkout([$class: 'GitSCM', branches: [[name: '*/$branch']], 
+     echo '/$githubToken'
+        checkout([$class: 'GitSCM', branches: [[name: 'master']], 
             doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
             userRemoteConfigs: [[credentialsId:'/$githubToken' , url: 'gihub project url']]])
     }
