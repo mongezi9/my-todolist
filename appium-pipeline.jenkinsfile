@@ -1,8 +1,9 @@
 node {
    
     stage('Environment/Bundles Setup') {
-        sh "Scripts/change_server.sh $server"
-        sh "pod install --repo-update"
+        sh "ls"
+        sh "docker build -t my_to_do_list ."
+     
     }
     stage('Clean') {
         sh 'fastlane clean_xcode'
