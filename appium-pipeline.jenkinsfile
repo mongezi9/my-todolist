@@ -14,10 +14,12 @@ node {
     }
 
     stage('Image Build'){
+         sh "apt-get -y install docker.io " 
          sh "docker -v"
          sh "chmod 777 /var/run/docker.sock"
          sh "export DOCKER_HOST=unix:///var/run/docker.sock"
-         sh "service docker restart"
+         
+         sh "service docker.io start"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
