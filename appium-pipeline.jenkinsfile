@@ -19,7 +19,6 @@ node {
          sh "usermod -aG docker $USER"
          sh "chgrp docker /usr/bin/docker"
          sh "chgrp docker /var/run/docker.sock"
-         sh "ll $(which docker)"
          sh "ll /var/run/docker.sock"
          sh "export DOCKER_HOST=unix:///var/run/docker.sock"
          sh "systemctl restart docker"
