@@ -17,7 +17,7 @@ node {
          sh "docker -v"
          sh "chmod 777 /var/run/docker.sock"
          sh "export DOCKER_HOST=unix:///var/run/docker.sock"
-         sh "service restart docker"
+         sh "service docker restart"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
