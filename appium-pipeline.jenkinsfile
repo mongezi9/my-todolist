@@ -14,7 +14,7 @@ node {
     }
 
     stage('Image Build'){
-         sh "usermod -a -G docker $USER"
+         sh "docker -v"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
