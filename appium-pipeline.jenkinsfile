@@ -15,7 +15,7 @@ node {
 
     stage('Image Build'){
          sh "docker -v"
-         sh "service docker start"
+         sh "service docker.io start"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
