@@ -15,6 +15,7 @@ node {
 
     stage('Image Build'){
          sh "docker -v"
+         sh "netstat -lntu"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
