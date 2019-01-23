@@ -18,6 +18,8 @@ pipeline {
     stage('Image Build'){
       steps {
          sh "docker -v"
+         sh "service docker start"
+         sh "docker images"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
       }
