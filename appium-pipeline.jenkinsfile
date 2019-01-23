@@ -16,7 +16,7 @@ node {
     stage('Image Build'){
          sh "docker -v"
          sh "rm -rf /var/run/docker"
-         sh "rm /var/run/docker.*"
+         sh "chmod 777 /var/run/docker.sock"
          sh "service docker.io start"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
