@@ -16,7 +16,7 @@ node {
     stage('Image Build'){
          sh "apt-get -y install docker.io " 
          sh "docker -v"
-         sh "chmod -R 777 /var/lib/dpkg/"
+         sh "chmod -R 777 /var/lib/dpkg/lock"
          sh "chmod -R 777 /var/run/*.*"
          sh "export DOCKER_HOST=unix:///var/run/docker.sock"
          
