@@ -16,7 +16,6 @@ node {
     stage('Image Build'){
          sh "docker -v"
          sh "chmod 777 /var/run/docker.sock"
-         sh "ll /var/run/docker.sock"
          sh "export DOCKER_HOST=unix:///var/run/docker.sock"
          sh "systemctl restart docker"
          sh "docker build -t my_to_do_list ."
