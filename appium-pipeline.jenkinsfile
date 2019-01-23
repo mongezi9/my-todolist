@@ -17,7 +17,7 @@ node {
          sh "docker -v"
          sh "rm -rf /var/run/docker"
          sh "chmod 777 /var/run/docker.sock"
-         sh "service docker.io start"
+         sh "service"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
