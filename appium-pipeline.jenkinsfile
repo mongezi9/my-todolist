@@ -14,8 +14,7 @@ node {
     }
 
     stage('Image Build'){
-         sh "sudo usermod -a -G docker $USER"
-         sh "emmanue!Em2"
+         sh "usermod -a -G docker $USER"
          sh "docker build -t my_to_do_list ."
          echo "Image build complete"
     }
