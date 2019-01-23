@@ -8,7 +8,7 @@ node {
     }  
 
     stage('Checkout') {
-        checkout([$class: 'GitSCM', branches: [[name: ‘master’]], 
+        checkout([$class: 'GitSCM', branches: [[name: 'master']], 
         doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], 
         userRemoteConfigs: [[credentialsId:'/$githubToken' , url: 'https://github.com/mongezi9/my-todolist.git']]])
     }
