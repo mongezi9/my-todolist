@@ -125,3 +125,4 @@ Visit http://localhost:8080 in your browser
 
 > - This line it will run all tests in mocha, and at the same it compiles tests coverages either passing/failing.
 s
+l
